@@ -1,0 +1,23 @@
+/* Design tokens: colours (light + dark), fonts, radius. Every other file uses these variables. */
+
+:root{
+  --bg:#F2F4F7;--surface:#FFFFFF;--ink:#1B2430;--muted:#5B6675;--rule:#D5DAE1;
+  --accent:#2948C7;--done:#1F7A4D;--now:#B4531A;
+  --done-soft:color-mix(in srgb,var(--done) 10%,var(--surface));
+  --accent-soft:color-mix(in srgb,var(--accent) 9%,var(--surface));
+  --now-soft:color-mix(in srgb,var(--now) 11%,var(--surface));
+  --radius:12px;--shadow:0 1px 2px rgb(16 24 40 / .06);
+  --font-head:"Bricolage Grotesque",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --font-body:"Atkinson Hyperlegible",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#12161C;--surface:#1A2029;--ink:#E6EAF0;--muted:#97A1AE;--rule:#2C3542;
+    --accent:#8CA3FF;--done:#5CC48C;--now:#F0A06A;--shadow:none;color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#12161C;--surface:#1A2029;--ink:#E6EAF0;--muted:#97A1AE;--rule:#2C3542;
+  --accent:#8CA3FF;--done:#5CC48C;--now:#F0A06A;--shadow:none;color-scheme:dark;
+}

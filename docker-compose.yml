@@ -1,0 +1,81 @@
+# Local stack: `docker compose up -d db` for just Postgres (dev), or `docker compose up --build` for DB + API.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: prepflow
+      # On a server put a strong POSTGRES_PASSWORD in a .env next to this file (only read when the volume is first created)
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-prepflow}
+      POSTGRES_DB: prepflow
+    # Loopback only: reachable from this machine (npm scripts, tests), never from the network
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U prepflow -d prepflow"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    # Optional extras (LOG_LEVEL, SESSION_DAYS…) from backend/.env; values under `environment` win.
+    # The login account itself lives in the database, created on the app's sign-up page.
+    env_file:
+      - path: backend/.env
+        required: false
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      DATABASE_URL: postgres://prepflow:${POSTGRES_PASSWORD:-prepflow}@db:5432/prepflow
+      APP_TIMEZONE: Asia/Kolkata
+      SERVE_FRONTEND: "true"
+      FRONTEND_DIR: /app/frontend
+    ports:
+      - "4000:4000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # Database UI: `docker compose up -d pgadmin` → http://localhost:5051 (password for the server: prepflow)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: prepflow
+      PGADMIN_CONFIG_SERVER_MODE: "False"                 # desktop mode: no pgAdmin login screen (local only)
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+    ports:
+      - "127.0.0.1:5051:80"
+    configs:
+      - source: pgadmin_servers
+        target: /pgadmin4/servers.json
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    depends_on:
+      - db
+
+# Inline instead of a bind-mounted file: works even where Docker can't see the project folder (e.g. snap Docker)
+configs:
+  pgadmin_servers:
+    content: |
+      {
+        "Servers": {
+          "1": {
+            "Name": "PrepFlow (local)",
+            "Group": "Servers",
+            "Host": "db",
+            "Port": 5432,
+            "MaintenanceDB": "prepflow",
+            "Username": "prepflow",
+            "SSLMode": "prefer"
+          }
+        }
+      }
+
+volumes:
+  pgdata:
+  pgadmin:

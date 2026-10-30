@@ -1,0 +1,38 @@
+{
+  "name": "prepflow-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "REST API for the PrepFlow interview-prep tracker (Express + PostgreSQL)",
+  "type": "module",
+  "main": "src/server.js",
+  "engines": {
+    "node": ">=20.12"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "db:migrate": "node src/db/migrate.js",
+    "db:seed": "node src/db/seed.js",
+    "db:reset": "node src/db/seed.js --force",
+    "db:striver": "node src/db/striver.js",
+    "striver:fetch": "node scripts/fetch-striver-sheet.js",
+    "dsa:fetch": "node scripts/fetch-dsa-links.js",
+    "db:dsa-links": "node src/db/dsa-links.js",
+    "db:add-section": "node src/db/add-section.js",
+    "auth:reset-password": "node scripts/reset-password.js",
+    "setup": "npm run db:migrate && npm run db:seed",
+    "test": "node --test tests/"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.3.0",
+    "helmet": "^8.3.0",
+    "pg": "^8.23.1",
+    "pino": "^9.14.0",
+    "pino-http": "^10.5.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "supertest": "^7.3.1"
+  }
+}

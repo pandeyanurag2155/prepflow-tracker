@@ -1,0 +1,84 @@
+/* View-specific layout: Striver, revision grid, dashboard. */
+
+/* Striver */
+.sticky-bar{position:sticky;top:var(--tabs-h,46px);z-index:10;background:var(--bg);padding:10px 0;margin:-6px 0 12px;border-bottom:1px solid var(--rule);display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center}
+.step{margin-top:14px;padding-top:12px;border-top:1px solid var(--rule)}
+.step-label{font-size:.75rem;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.substep{border:1px solid var(--rule);border-radius:8px;margin-top:8px;background:var(--surface)}
+.substep>summary{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;padding:8px 10px;cursor:pointer;list-style:none}
+.substep>summary::-webkit-details-marker{display:none}
+.substep>summary::before{content:"▸";color:var(--muted);flex:none;transition:transform .2s}
+.substep .sub-title{flex:1 1 14rem;min-width:0;overflow-wrap:anywhere}
+.substep .sub-tools{display:flex;align-items:center;gap:6px;margin-left:auto}
+.substep[open]>summary::before{transform:rotate(90deg)}
+.substep-body{padding:0 10px 10px}
+.substep-body .items{margin-top:0}
+
+/* Roadmap / NeetCode: themes grouped by month */
+.month-block{margin-bottom:28px;scroll-margin-top:calc(var(--tabs-h,46px) + 12px)}
+.month-head{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center}
+.month-head h3{font-size:1.35rem}
+.month-block>.bar{margin:8px 0 12px}
+.month-block.is-now>.month-head h3{color:var(--now)}
+.month-block .card-head h4{font-size:1.05rem}
+
+/* Revision: one collapsible card per language, levels stacked inside */
+.level-head{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;margin-bottom:4px}
+.level-head h4{font-size:1.05rem}
+.lang-acc{padding:0}
+.lang-acc>summary{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:14px 16px;cursor:pointer;list-style:none}
+.lang-acc>summary::-webkit-details-marker{display:none}
+.lang-acc>summary::before{content:"▸";color:var(--muted);transition:transform .2s;flex:none}
+.lang-acc[open]>summary::before{transform:rotate(90deg)}
+.lang-acc>summary h3{font-size:1.2rem}
+.lang-acc>summary .segs{width:min(220px,40vw)}
+.lang-acc>summary .segs .bar{height:8px}
+.lang-body{padding:0 16px 16px}
+.lang-level{margin-top:12px;padding-top:12px;border-top:1px solid var(--rule)}
+.lang-level.is-now{border-top:3px solid var(--now)}
+
+/* Dashboard */
+.dash{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+.span-3{grid-column:span 3}.span-4{grid-column:span 4}.span-5{grid-column:span 5}.span-6{grid-column:span 6}.span-7{grid-column:span 7}.span-8{grid-column:span 8}.span-12{grid-column:span 12}
+@media (max-width:960px){.span-3{grid-column:span 6}.span-4,.span-5,.span-6,.span-7,.span-8{grid-column:span 12}}
+@media (max-width:520px){.span-3{grid-column:span 12}}
+.kicker{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700;margin:0 0 6px;font-family:var(--font-head)}
+.stat{font-family:var(--font-head);font-size:2.1rem;font-weight:800;line-height:1.05}
+.stat small{font-size:.95rem;color:var(--muted);font-weight:500}
+.hint{color:var(--muted);font-size:.88rem;margin:6px 0 0}
+.strip{display:grid;grid-template-columns:repeat(var(--cols,3),minmax(0,1fr));gap:8px;height:150px;margin-top:8px}
+.vbar{display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;border:0;background:none;cursor:pointer;padding:4px 0 0;border-radius:8px;color:var(--muted);font-size:.75rem}
+.vbar .track{flex:1;width:100%;max-width:44px;background:var(--rule);border-radius:6px;overflow:hidden;display:flex;align-items:flex-end}
+.vbar .fill{width:100%;background:var(--done)}
+.vbar.is-now .track{outline:2px solid var(--now);outline-offset:2px}
+.vbar.is-now{color:var(--now);font-weight:700}
+.steps-grid{display:grid;grid-template-columns:repeat(var(--cols,9),minmax(0,1fr));gap:8px;margin-top:8px}
+@media (max-width:520px){.steps-grid{grid-template-columns:repeat(6,minmax(0,1fr))}}
+.sbar{border:0;background:none;cursor:pointer;padding:0;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.7rem;color:var(--muted)}
+.sbar .track{width:100%;height:48px;background:var(--rule);border-radius:5px;overflow:hidden;display:flex;align-items:flex-end}
+.sbar .fill{width:100%;background:var(--accent)}
+.sbar.is-now{color:var(--now);font-weight:700}
+.sbar.is-now .track{outline:2px solid var(--now);outline-offset:1px}
+.seg-row{display:grid;grid-template-columns:96px minmax(0,1fr) auto;gap:10px;align-items:center;margin-top:10px;font-size:.9rem}
+.segs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+.segs .bar{margin:0;height:10px}
+.seg-row.legend{font-size:.72rem;color:var(--muted);margin-top:4px}
+.activity{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:4px;align-items:end;height:96px;margin-top:8px}
+.act{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px;height:100%;font-size:.65rem;color:var(--muted)}
+.act i{display:block;width:100%;min-height:3px;border-radius:4px;background:var(--done)}
+.act i.zero{background:var(--rule)}
+.due-list{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:6px}
+.due-list li{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:8px 10px;border:1px solid var(--rule);border-radius:8px}
+.due-list li span{min-width:0;overflow-wrap:anywhere}
+.seg-row.wide{grid-template-columns:150px minmax(0,1fr) auto}
+.seg-row>.bar{margin:0}
+
+/* My resume */
+.resume-upload{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end}
+.resume-upload .field{flex:1 1 240px}
+.resume-list{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:8px}
+.resume{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;padding:12px;border:1px solid var(--rule);border-radius:10px}
+.resume-main{min-width:0;flex:1 1 260px}
+.resume-title{display:flex;gap:8px;align-items:center;flex-wrap:wrap;overflow-wrap:anywhere}
+.resume-main .hint{margin:4px 0 0;overflow-wrap:anywhere}
+.resume-tools{display:flex;flex-wrap:wrap;gap:6px}
